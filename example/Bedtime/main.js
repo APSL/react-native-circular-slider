@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { AppRegistry, StyleSheet, Text, View } from 'react-native';
 import Svg, { G, Path } from 'react-native-svg';
 
-import CircularSlider from 'react-native-circular-slider';
+import CircularSlider from './CircularSlider';
 import TimerText from './components/TimerText';
 
 const WAKE_ICON = (
@@ -33,13 +33,16 @@ function calculateTimeFromAngle(angle) {
   const minutes = calculateMinutesFromAngle(angle);
   const h = Math.floor(minutes / 60);
   const m = minutes - h * 60;
-
   return { h, m };
+}
+
+function calculateStepFromAngle (angle: number): number {
+  const step: number = Math.round(angle / (2 * Math.PI / 10))
+  return step
 }
 
 function roundAngleToFives(angle) {
   const fiveMinuteAngle = 2 * Math.PI / 144;
-
   return Math.round(angle / fiveMinuteAngle) * fiveMinuteAngle;
 }
 
@@ -47,7 +50,6 @@ function padMinutes(min) {
   if (`${min}`.length < 2) {
     return `0${min}`;
   }
-
   return min;
 }
 
@@ -76,7 +78,7 @@ export default class Bedtime extends Component {
 
     return (
       <View style={styles.container}>
-        <View style={styles.timeContainer}>
+        {/* <View style={styles.timeContainer}>
           <View style={styles.time}>
             <View style={styles.timeHeader}>
               <Svg height={16} width={16}>
@@ -95,26 +97,27 @@ export default class Bedtime extends Component {
             </View>
             <Text style={styles.timeValue}>{waketime.h}:{padMinutes(waketime.m)}</Text>
           </View>
-        </View>
+        </View> */}
         <View>
           <TimerText
             style={styles.sleepTimeContainer}
-            minutesLong={calculateMinutesFromAngle(angleLength)}
+            minutesLong={calculateStepFromAngle(angleLength)}
           />
           <CircularSlider
-            startAngle={startAngle}
+            startAngle={0}
             angleLength={angleLength}
             onUpdate={this.onUpdate}
-            segments={5}
+            segments={12}
             strokeWidth={40}
             radius={145}
-            gradientColorFrom="#ff9800"
-            gradientColorTo="#ffcf00"
+            gradientColorFrom='#f1c40f' //"#ff9800"
+            gradientColorTo='#e74c3c'   //"#ffcf00"
             showClockFace
             clockFaceColor="#9d9d9d"
             bgCircleColor="#171717"
-            stopIcon={<G scale="1.1" transform={{ translate: "-8, -8" }}>{WAKE_ICON}</G>}
-            startIcon={<G scale="1.1" transform={{ translate: "-8, -8" }}>{BEDTIME_ICON}</G>}
+            steps={10}
+            showClockLines={false}
+            showStartIcon={false}
           />
         </View>
       </View>

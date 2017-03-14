@@ -1,22 +1,19 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 
 
-export default class TimerText extends Component {
+export default class TimerText extends PureComponent {
 
   render() {
     const { minutesLong, ...rest } = this.props;
-
-    const hours = Math.floor(minutesLong / 60);
-    const minutes = minutesLong - hours * 60;
-
+    console.log('render TimerText')
     return (
       <View {...rest}>
         <View style={styles.timerContainer}>
-          <Text style={styles.time}>{hours}</Text>
-          <Text style={styles.text}>HR</Text>
+          <Text style={styles.time}>{minutesLong}</Text>
+          {/* <Text style={styles.text}>HR</Text>
           <Text style={[styles.time, styles.span]}>{minutes}</Text>
-          <Text style={styles.text}>MIN</Text>
+          <Text style={styles.text}>MIN</Text> */}
         </View>
       </View>
     );
